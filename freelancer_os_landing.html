@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freelancer OS — Your Entire Business in Notion</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #faf7f2;
+    --warm: #f5ede0;
+    --brown: #2c1810;
+    --brown-mid: #5c3d2e;
+    --brown-light: #a0765c;
+    --accent: #c17f4b;
+    --accent-dark: #9a6235;
+    --green: #2d5a3d;
+    --green-light: #e8f0eb;
+    --text: #1a1208;
+    --muted: #7a6655;
+    --border: #e8ddd0;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* GRAIN TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: .4;
+  }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* NAV */
+  nav {
+    padding: 20px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(250,247,242,.95);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--brown);
+    letter-spacing: -.5px;
+  }
+  .nav-cta {
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    padding: 9px 22px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all .15s;
+  }
+  .nav-cta:hover { background: var(--accent-dark); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    padding: 80px 0 64px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 68px);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    color: var(--brown);
+    margin-bottom: 24px;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 em { color: var(--accent); font-style: italic; }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--brown);
+    color: white;
+    text-decoration: none;
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all .2s;
+    letter-spacing: -.2px;
+  }
+  .hero-btn:hover { background: var(--brown-mid); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(44,24,16,.2); }
+
+  .hero-note { margin-top: 16px; font-size: 13px; color: var(--brown-light); }
+
+  /* SCREENSHOT PLACEHOLDER */
+  .mockup {
+    margin: 60px auto 0;
+    max-width: 720px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(44,24,16,.1);
+  }
+  .mockup-bar {
+    background: var(--warm);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #febc2e; }
+  .dot.g { background: #28c840; }
+  .mockup-content {
+    padding: 32px;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .notion-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--brown);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .notion-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .notion-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .notion-card .label { font-size: 11px; color: var(--brown-light); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .notion-card .value { font-size: 20px; font-weight: 700; color: var(--brown); }
+  .notion-card .sub { font-size: 11px; color: var(--brown-light); margin-top: 2px; }
+  .notion-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .notion-link {
+    background: var(--green-light);
+    color: var(--green);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* PAIN */
+  .pain {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 900;
+    color: var(--brown);
+    line-height: 1.1;
+    letter-spacing: -.5px;
+    margin-bottom: 16px;
+  }
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 40px;
+  }
+  .pain-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: border-color .2s;
+  }
+  .pain-card:hover { border-color: var(--brown-light); }
+  .pain-emoji { font-size: 24px; margin-bottom: 10px; }
+  .pain-text { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+  /* INCLUDES */
+  .includes {
+    padding: 80px 0;
+    background: var(--warm);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .includes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 40px;
+  }
+  .include-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: all .2s;
+  }
+  .include-item:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(44,24,16,.08); }
+  .include-icon { font-size: 28px; margin-bottom: 10px; }
+  .include-name { font-weight: 600; font-size: 15px; color: var(--brown); margin-bottom: 6px; }
+  .include-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .testi-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .stars { color: var(--accent); font-size: 14px; margin-bottom: 12px; }
+  .testi-text { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; font-style: italic; }
+  .testi-author { font-size: 13px; font-weight: 600; color: var(--brown); }
+  .testi-role { font-size: 12px; color: var(--brown-light); }
+
+  /* PRICING */
+  .pricing {
+    padding: 80px 0;
+    background: var(--brown);
+    border-top: 1px solid var(--brown-mid);
+    text-align: center;
+  }
+  .pricing h2 { color: white; }
+  .pricing .section-label { color: var(--accent); }
+  .pricing-sub { color: rgba(255,255,255,.6); margin-top: 8px; font-size: 15px; }
+
+  .price-box {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 420px;
+    margin: 48px auto 0;
+    text-align: left;
+  }
+  .price-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--brown);
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 4px;
+  }
+  .price-note { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+  .price-features { list-style: none; display: grid; gap: 10px; margin-bottom: 32px; }
+  .price-feature {
+    display: flex;
+    gap: 10px;
+    font-size: 15px;
+    color: var(--brown);
+    align-items: flex-start;
+  }
+  .price-feature::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+  .price-btn {
+    display: block;
+    width: 100%;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -.2px;
+    transition: all .15s;
+  }
+  .price-btn:hover { background: var(--accent-dark); }
+  .guarantee {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--brown);
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Freelancer OS</div>
+  <a href="https://sparkpacks.gumroad.com/l/dcbecw" target="_blank" class="nav-cta">Get it — $19</a>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow">Notion Template System</div>
+      <h1>Your entire freelance<br>business in <em>one place.</em></h1>
+      <p class="hero-sub">
+        Projects, clients, invoices, contracts, finances, and leads —
+        all connected in a single Notion workspace you'll actually use.
+      </p>
+      <a href="#pricing" class="hero-btn">Get Freelancer OS — $19 →</a>
+      <p class="hero-note">One-time purchase · Works in any Notion plan · Setup in 10 minutes</p>
+
+      <div class="mockup">
+        <div class="mockup-bar">
+          <div class="dot r"></div>
+          <div class="dot y"></div>
+          <div class="dot g"></div>
+          <span style="margin-left:8px;font-size:12px;color:#999">Freelancer OS — Dashboard</span>
+        </div>
+        <div class="mockup-content">
+          <div class="notion-title">🏠 This Week at a Glance</div>
+          <div class="notion-row">
+            <div class="notion-card">
+              <div class="label">Active Projects</div>
+              <div class="value">4</div>
+              <div class="sub">2 due this week</div>
+            </div>
+            <div class="notion-card">
+              <div class="label">Revenue (MTD)</div>
+              <div class="value">$6,200</div>
+              <div class="sub">Goal: $8,000</div>
+            </div>
+            <div class="notion-card">
+              <div class="label">Overdue Invoices</div>
+              <div class="value">1</div>
+              <div class="sub">$1,400 outstanding</div>
+            </div>
+          </div>
+          <div class="notion-links">
+            <div class="notion-link">📁 Projects (4)</div>
+            <div class="notion-link">👥 Clients (12)</div>
+            <div class="notion-link">💸 Invoices</div>
+            <div class="notion-link">🎯 Pipeline</div>
+            <div class="notion-link">💰 Finance</div>
+            <div class="notion-link">📄 Contracts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pain">
+    <div class="container">
+      <div class="section-label">The Problem</div>
+      <h2>Running your freelance<br>business shouldn't be this messy.</h2>
+      <p style="color:var(--muted);max-width:480px;margin-top:12px;">Most freelancers manage their business across 5–8 different places. Nothing talks to each other. Stuff falls through the cracks.</p>
+      <div class="pain-grid">
+        <div class="pain-card">
+          <div class="pain-emoji">📧</div>
+          <div class="pain-text">"What did we agree the scope was?" — digging through emails to answer a client question you should know instantly.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-emoji">📊</div>
+          <div class="pain-text">"Did I actually make money this month?" — checking your bank account and guessing instead of knowing.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-emoji">😬</div>
+          <div class="pain-text">"Oh no — their invoice was due two weeks ago." — discovering overdue payments because there's no system to catch them.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-emoji">🤷</div>
+          <div class="pain-text">"I know I had a contract template somewhere..." — hunting through old emails every time you need to send a contract.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-emoji">😰</div>
+          <div class="pain-text">"I should probably follow up on that lead from last month." — leads slipping through because there's no pipeline to track them.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-emoji">🌀</div>
+          <div class="pain-text">Monday morning: 30 minutes figuring out what's happening before you can actually start working.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="includes">
+    <div class="container">
+      <div class="section-label">What's Inside</div>
+      <h2>Everything a freelancer needs.<br>Nothing they don't.</h2>
+      <div class="includes-grid">
+        <div class="include-item">
+          <div class="include-icon">🏠</div>
+          <div class="include-name">Dashboard</div>
+          <div class="include-desc">Weekly at-a-glance view. Update in 5 minutes. Know where everything stands.</div>
+        </div>
+        <div class="include-item">
+          <div class="include-icon">📁</div>
+          <div class="include-name">Project Tracker</div>
+          <div class="include-desc">Full scope, revision log, meeting notes, file links. No more "what was included" debates.</div>
+        </div>
+        <div class="include-item">
+          <div class="include-icon">👥</div>
+          <div class="include-name">Client CRM</div>
+          <div class="include-desc">Every client detail: contacts, payment history, communication notes, relationship rating.</div>
+        </div>
+        <div class="include-item">
+          <div class="include-icon">💸</div>
+          <div class="include-name">Invoice Tracker</div>
+          <div class="include-desc">Sent, unpaid, overdue, paid. Automatic follow-up reminders. Know who owes what.</div>
+        </div>
+        <div class="include-item">
+          <div class="include-icon">💰</div>
+          <div class="include-name">Finance Overview</div>
+          <div class="include-desc">Monthly income vs expenses. Net profit. Tax set-aside. Annual summary. Know your numbers.</div>
+        </div>
+        <div class="include-item">
+          <div class="include-icon">🎯</div>
+          <div class="include-name">Lead Pipeline</div>
+          <div class="include-desc">5-stage pipeline from cold lead to signed client. Never let a warm lead go cold.</div>
+        </div>
+        <div class="include-item">
+          <div class="include-icon">📄</div>
+          <div class="include-name">Contract Templates</div>
+          <div class="include-desc">Project contract + retainer agreement. Plain English. Used by real freelancers.</div>
+        </div>
+        <div class="include-item">
+          <div class="include-icon">📧</div>
+          <div class="include-name">Email Templates</div>
+          <div class="include-desc">6 templates for the situations that happen every week: inquiry, follow-up, overdue, more.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-label">What Freelancers Say</div>
+      <h2>It actually gets used.</h2>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <div class="testi-text">"I've tried 4 different Notion templates for my freelance business. This is the first one I've actually stuck with for more than a week. Everything is connected — projects link to clients, clients link to invoices. It just works."</div>
+          <div class="testi-author">Marta K.</div>
+          <div class="testi-role">Freelance UX Designer, Warsaw</div>
+        </div>
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <div class="testi-text">"The contract templates alone are worth the price. I used to spend 30 minutes on every new client just figuring out the contract. Now it takes 5. The finance tracker finally made me understand my actual profitability."</div>
+          <div class="testi-author">James T.</div>
+          <div class="testi-role">Freelance Developer, London</div>
+        </div>
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <div class="testi-text">"The red flags checklist saved me from a nightmare client. I had 4 red flags checked off and walked away. Best decision I made last quarter."</div>
+          <div class="testi-author">Ana R.</div>
+          <div class="testi-role">Brand Designer & Consultant</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-label">Simple Pricing</div>
+      <h2>One price. Yours forever.</h2>
+      <p class="pricing-sub">No subscription. No Notion subscription required. Free plan works.</p>
+
+      <div class="price-box">
+        <div class="price-amount">$19</div>
+        <p class="price-note">One-time · Instant download</p>
+        <ul class="price-features">
+          <li class="price-feature">Full Notion template system (all 8 sections)</li>
+          <li class="price-feature">2 ready-to-use contract templates</li>
+          <li class="price-feature">6 proven email templates</li>
+          <li class="price-feature">Red flags checklist + pricing benchmarks</li>
+          <li class="price-feature">Setup instructions + quick start guide</li>
+          <li class="price-feature">Free updates forever</li>
+        </ul>
+        <a href="https://sparkpacks.gumroad.com/l/dcbecw" target="_blank" class="price-btn">Get Freelancer OS Now →</a>
+        <p class="guarantee">🛡️ 30-day refund. No questions asked.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-logo">Freelancer OS</div>
+  <p>Complete Business System for Notion · v1.0.0</p>
+</footer>
+
+</body>
+</html>

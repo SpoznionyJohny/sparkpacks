@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevFlow Pro — Professional AI Coding Rules</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --border: #1e1e2e;
+    --border-bright: #2a2a3e;
+    --text: #e2e2f0;
+    --muted: #6b6b8a;
+    --accent: #6366f1;
+    --accent-bright: #818cf8;
+    --accent-glow: rgba(99, 102, 241, 0.15);
+    --green: #34d399;
+    --red: #f87171;
+    --yellow: #fbbf24;
+    --code-bg: #0d0d16;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+
+  /* GRID BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(99,102,241,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99,102,241,.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* NAV */
+  nav {
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(10,10,15,.92);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--accent-bright); }
+  .nav-cta {
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all .15s;
+  }
+  .nav-cta:hover { background: var(--accent-bright); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    padding: 100px 0 80px;
+    text-align: center;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent-glow);
+    border: 1px solid rgba(99,102,241,.3);
+    color: var(--accent-bright);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 32px;
+    letter-spacing: .5px;
+  }
+  .badge::before { content: '◆'; font-size: 8px; }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 .highlight {
+    background: linear-gradient(135deg, var(--accent-bright), #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all .2s;
+    box-shadow: 0 0 40px rgba(99,102,241,.3);
+  }
+  .btn-primary:hover {
+    background: var(--accent-bright);
+    transform: translateY(-2px);
+    box-shadow: 0 0 60px rgba(99,102,241,.4);
+  }
+
+  .btn-secondary {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color .15s;
+  }
+  .btn-secondary:hover { color: var(--text); }
+
+  /* SOCIAL PROOF */
+  .social-proof {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .proof-item {
+    text-align: center;
+  }
+  .proof-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .proof-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* PAIN SECTION */
+  .pain {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-bright);
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+
+  .pain-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+    margin-top: 40px;
+  }
+  .pain-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--muted);
+    transition: border-color .2s;
+  }
+  .pain-item:hover { border-color: var(--border-bright); }
+  .pain-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  /* CODE COMPARISON */
+  .comparison {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 40px;
+  }
+  @media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
+
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .code-header.bad { color: var(--red); border-bottom-color: rgba(248,113,113,.2); background: rgba(248,113,113,.05); }
+  .code-header.good { color: var(--green); border-bottom-color: rgba(52,211,153,.2); background: rgba(52,211,153,.05); }
+  .code-body { padding: 16px; overflow-x: auto; }
+
+  .token-keyword { color: #c792ea; }
+  .token-fn { color: #82aaff; }
+  .token-str { color: #c3e88d; }
+  .token-type { color: #ffcb6b; }
+  .token-comment { color: #546e7a; font-style: italic; }
+  .token-op { color: #89ddff; }
+
+  /* INCLUDES */
+  .includes {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .rule-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all .2s;
+    cursor: default;
+  }
+  .rule-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(99,102,241,.15);
+  }
+  .rule-icon { font-size: 28px; margin-bottom: 12px; }
+  .rule-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .rule-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .rule-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 12px;
+  }
+  .tag {
+    background: rgba(99,102,241,.1);
+    border: 1px solid rgba(99,102,241,.2);
+    color: var(--accent-bright);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* WHAT YOU GET */
+  .features {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+  }
+  .features-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 40px;
+  }
+  .feature-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: border-color .2s;
+  }
+  .feature-item:hover { border-color: var(--border-bright); }
+  .feature-check {
+    width: 22px;
+    height: 22px;
+    background: rgba(52,211,153,.15);
+    border: 1px solid rgba(52,211,153,.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--green);
+  }
+  .feature-text strong { display: block; margin-bottom: 3px; font-size: 15px; }
+  .feature-text span { font-size: 13px; color: var(--muted); }
+
+  /* PRICING */
+  .pricing {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .pricing-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 48px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .pricing-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: left;
+    position: relative;
+    transition: all .2s;
+  }
+  .pricing-card:hover { transform: translateY(-2px); }
+  .pricing-card.featured {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, rgba(99,102,241,.08) 0%, var(--surface) 100%);
+    box-shadow: 0 0 60px rgba(99,102,241,.15);
+  }
+  .popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+  }
+  .plan-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .plan-price {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 40px;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+  .plan-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+  .plan-features { list-style: none; display: grid; gap: 10px; margin-bottom: 28px; }
+  .plan-feature {
+    display: flex;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .plan-feature::before { content: '✓'; color: var(--green); flex-shrink: 0; font-weight: 700; }
+  .plan-feature.em { color: var(--text); }
+  .plan-btn {
+    display: block;
+    width: 100%;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all .15s;
+  }
+  .plan-btn:hover { background: var(--accent-bright); }
+  .plan-btn.outline {
+    background: transparent;
+    border: 1px solid var(--border-bright);
+    color: var(--text);
+  }
+  .plan-btn.outline:hover { border-color: var(--accent); color: var(--accent-bright); }
+
+  /* FAQ */
+  .faq {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+  }
+  .faq-list { margin-top: 40px; display: grid; gap: 12px; }
+  .faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .faq-q {
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 15px;
+  }
+  .faq-a { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .footer-logo span { color: var(--accent-bright); }
+
+  /* GUARANTEE */
+  .guarantee {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+    padding: 16px 24px;
+    background: rgba(52,211,153,.05);
+    border: 1px solid rgba(52,211,153,.15);
+    border-radius: 10px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .guarantee-icon { font-size: 24px; flex-shrink: 0; }
+  .guarantee strong { color: var(--green); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero > * { animation: fadeUp .6s ease both; }
+  .hero .badge { animation-delay: .1s; }
+  .hero h1 { animation-delay: .2s; }
+  .hero .hero-sub { animation-delay: .3s; }
+  .hero .hero-actions { animation-delay: .4s; }
+  .hero .social-proof { animation-delay: .5s; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Dev<span>Flow</span> Pro</div>
+  <a href="https://sparkpacks.gumroad.com/l/ehkwm" target="_blank" class="nav-cta">Get Rules — $19</a>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="badge">v1.0.0 — 4 Rule Sets Included</div>
+
+      <h1>Your AI writes better code<br>when you give it <span class="highlight">better rules.</span></h1>
+
+      <p class="hero-sub">
+        Production-grade Cursor Rules and AI workflow system for serious developers.
+        Drop in. Get results. No more correcting the AI.
+      </p>
+
+      <div class="hero-actions">
+        <a href="https://sparkpacks.gumroad.com/l/ehkwm" target="_blank" class="btn-primary">
+          Get DevFlow Pro — $19
+        </a>
+        <a href="#includes" class="btn-secondary">See what's included ↓</a>
+      </div>
+
+      <div class="social-proof">
+        <div class="proof-item">
+          <div class="proof-num">4</div>
+          <div class="proof-label">Production Rule Sets</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-num">900+</div>
+          <div class="proof-label">Lines of Rules</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-num">30d</div>
+          <div class="proof-label">Money-Back Guarantee</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-num">∞</div>
+          <div class="proof-label">Future Updates Free</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAIN -->
+  <section class="pain">
+    <div class="container">
+      <div class="section-label">The Problem</div>
+      <h2>Sound familiar?</h2>
+      <p style="color: var(--muted); max-width: 520px;">
+        You use an AI coding assistant. But you keep having the same conversations, over and over.
+      </p>
+      <ul class="pain-list">
+        <li class="pain-item"><span class="pain-icon">😤</span>"Stop using <code>any</code> in TypeScript. I've told you this."</li>
+        <li class="pain-item"><span class="pain-icon">😤</span>"Why did you rewrite all this code? I only asked you to fix one bug."</li>
+        <li class="pain-item"><span class="pain-icon">😤</span>"This function has no error handling. At all."</li>
+        <li class="pain-item"><span class="pain-icon">😤</span>"You left <code>// TODO: implement</code> in a function body. Again."</li>
+        <li class="pain-item"><span class="pain-icon">😤</span>"Use async sessions in SQLAlchemy. How many times do I have to say this."</li>
+        <li class="pain-item"><span class="pain-icon">😤</span>"Where's the aria-label? Where's the dark mode? Where's the loading state?"</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="comparison">
+    <div class="container">
+      <div class="section-label">The Difference</div>
+      <h2>Same prompt. Different rules. Different results.</h2>
+
+      <div class="compare-grid">
+        <div class="code-block">
+          <div class="code-header bad">✗ Without DevFlow Pro</div>
+          <pre class="code-body"><span class="token-comment">// AI just... guesses</span>
+<span class="token-keyword">async function</span> <span class="token-fn">getUser</span>(id) {
+  <span class="token-keyword">const</span> data<span class="token-op">:</span> <span class="token-type">any</span> <span class="token-op">=</span> <span class="token-keyword">await</span> <span class="token-fn">fetch</span>(
+    <span class="token-str">`/api/users/${id}`</span>
+  )
+  <span class="token-keyword">return</span> data
+  <span class="token-comment">// TODO: handle errors</span>
+}</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header good">✓ With DevFlow Pro</div>
+          <pre class="code-body"><span class="token-keyword">const</span> <span class="token-fn">UserSchema</span> <span class="token-op">=</span> z.<span class="token-fn">object</span>({
+  id<span class="token-op">:</span> z.<span class="token-fn">string</span>(),
+  name<span class="token-op">:</span> z.<span class="token-fn">string</span>(),
+})
+<span class="token-keyword">type</span> <span class="token-type">User</span> <span class="token-op">=</span> z.<span class="token-fn">infer</span><span class="token-op">&lt;</span><span class="token-keyword">typeof</span> UserSchema<span class="token-op">&gt;</span>
+
+<span class="token-keyword">async function</span> <span class="token-fn">getUser</span>(id<span class="token-op">:</span> <span class="token-type">string</span>)<span class="token-op">:</span> <span class="token-type">Promise</span><span class="token-op">&lt;</span><span class="token-type">User</span><span class="token-op">&gt;</span> {
+  <span class="token-keyword">const</span> res <span class="token-op">=</span> <span class="token-keyword">await</span> <span class="token-fn">fetch</span>(<span class="token-str">`/api/users/${id}`</span>)
+  <span class="token-keyword">if</span> (<span class="token-op">!</span>res.<span class="token-fn">ok</span>()) <span class="token-keyword">throw new</span> <span class="token-fn">ApiError</span>(res)
+  <span class="token-keyword">return</span> UserSchema.<span class="token-fn">parse</span>(<span class="token-keyword">await</span> res.<span class="token-fn">json</span>())
+}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INCLUDES -->
+  <section class="includes" id="includes">
+    <div class="container">
+      <div class="section-label">What's Included</div>
+      <h2>Four rule sets.<br>Every major stack.</h2>
+
+      <div class="rules-grid">
+        <div class="rule-card">
+          <div class="rule-icon">⚡</div>
+          <div class="rule-name">Next.js + TypeScript</div>
+          <div class="rule-desc">App Router, Server Components, strict TS, Tailwind, API routes, data fetching</div>
+          <div class="rule-tags">
+            <span class="tag">Next.js 14+</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Tailwind</span>
+            <span class="tag">Zod</span>
+          </div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-icon">🐍</div>
+          <div class="rule-name">Python + FastAPI</div>
+          <div class="rule-desc">Modern Python 3.11+, async SQLAlchemy 2.0, Pydantic v2, proper DI, error hierarchy</div>
+          <div class="rule-tags">
+            <span class="tag">FastAPI</span>
+            <span class="tag">SQLAlchemy</span>
+            <span class="tag">Pydantic v2</span>
+          </div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-icon">📱</div>
+          <div class="rule-name">React Native + Expo</div>
+          <div class="rule-desc">Performance-first RN, Expo Router, Zustand, 60fps patterns, iOS/Android parity</div>
+          <div class="rule-tags">
+            <span class="tag">Expo SDK 51+</span>
+            <span class="tag">Zustand</span>
+            <span class="tag">FlashList</span>
+          </div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-icon">🧠</div>
+          <div class="rule-name">Universal Workflow</div>
+          <div class="rule-desc">How the AI plans, communicates, scopes changes. Works with any stack and any AI tool.</div>
+          <div class="rule-tags">
+            <span class="tag">Cursor</span>
+            <span class="tag">Claude</span>
+            <span class="tag">Copilot</span>
+            <span class="tag">Windsurf</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="container">
+      <div class="section-label">What You Get</div>
+      <h2>Rules that actually work.</h2>
+
+      <div class="features-list">
+        <div class="feature-item">
+          <div class="feature-check">✓</div>
+          <div class="feature-text">
+            <strong>Works in 5 minutes</strong>
+            <span>Copy a rule file, paste into .cursorrules or CLAUDE.md, done. No plugins, no setup, no accounts.</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-check">✓</div>
+          <div class="feature-text">
+            <strong>Stack-specific, not generic</strong>
+            <span>Not "write good code." Rules for the exact APIs, patterns, and idioms of your specific stack.</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-check">✓</div>
+          <div class="feature-text">
+            <strong>Code examples in the rules</strong>
+            <span>Every rule includes a ✓ correct and ✗ wrong example. The AI knows exactly what you mean.</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-check">✓</div>
+          <div class="feature-text">
+            <strong>Security, a11y, and perf baked in</strong>
+            <span>The AI flags security issues, adds aria-labels, handles error states — without being asked every time.</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-check">✓</div>
+          <div class="feature-text">
+            <strong>Free updates forever</strong>
+            <span>When Next.js 15 drops or SQLAlchemy 3.0 lands, you get updated rules. One purchase, permanent access.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-label">Pricing</div>
+      <h2>Pay once. Use forever.</h2>
+      <p style="color: var(--muted); margin-top: 12px;">No subscription. No monthly fee. Yours forever.</p>
+
+      <div class="pricing-cards">
+        <div class="pricing-card">
+          <div class="plan-name">Solo</div>
+          <div class="plan-price">$19</div>
+          <div class="plan-sub">One developer</div>
+          <ul class="plan-features">
+            <li class="plan-feature em">All 4 rule sets</li>
+            <li class="plan-feature">Unlimited projects</li>
+            <li class="plan-feature">Works with any AI tool</li>
+            <li class="plan-feature">30-day guarantee</li>
+            <li class="plan-feature">Free lifetime updates</li>
+          </ul>
+          <a href="https://sparkpacks.gumroad.com/l/ehkwm" target="_blank" class="plan-btn outline">Get Solo License — $19</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <div class="popular-badge">Most Popular</div>
+          <div class="plan-name">Team</div>
+          <div class="plan-price">$49</div>
+          <div class="plan-sub">Up to 5 developers</div>
+          <ul class="plan-features">
+            <li class="plan-feature em">All 4 rule sets</li>
+            <li class="plan-feature em">Share across 5 devs</li>
+            <li class="plan-feature">Unlimited projects</li>
+            <li class="plan-feature">Works with any AI tool</li>
+            <li class="plan-feature">30-day guarantee</li>
+            <li class="plan-feature em">Free lifetime updates</li>
+          </ul>
+          <a href="https://sparkpacks.gumroad.com/l/ehkwm" target="_blank" class="plan-btn">Get Team License — $49</a>
+        </div>
+
+        <div class="pricing-card">
+          <div class="plan-name">Company</div>
+          <div class="plan-price">$99</div>
+          <div class="plan-sub">Unlimited developers</div>
+          <ul class="plan-features">
+            <li class="plan-feature em">All 4 rule sets</li>
+            <li class="plan-feature em">Entire organization</li>
+            <li class="plan-feature em">Onboarding guide</li>
+            <li class="plan-feature">30-day guarantee</li>
+            <li class="plan-feature em">Free lifetime updates</li>
+          </ul>
+          <a href="https://sparkpacks.gumroad.com/l/ehkwm" target="_blank" class="plan-btn outline">Get Company License — $99</a>
+        </div>
+      </div>
+
+      <div class="guarantee">
+        <div class="guarantee-icon">🛡️</div>
+        <div><strong>30-day money-back guarantee.</strong> If the rules don't make your AI noticeably better, full refund. No questions asked.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="container">
+      <div class="section-label">FAQ</div>
+      <h2>Common questions.</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">What AI tools do these rules work with?</div>
+          <div class="faq-a">Cursor (native .cursorrules support), Claude Code (CLAUDE.md), GitHub Copilot (.github/copilot-instructions.md), Windsurf, and any AI that accepts a system prompt — including ChatGPT, Claude.ai, and others.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How long does setup take?</div>
+          <div class="faq-a">Under 5 minutes. Copy a rule file, paste it into the right config file for your tool, done. The quickstart guide walks through it for each tool.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">My stack isn't in the list. Will this still help?</div>
+          <div class="faq-a">Yes. The Universal AI Workflow rules work with any stack and any language — they define how the AI thinks, plans, and communicates, not specific library APIs. And v1.1 adds Django, Vue/Nuxt, and more.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I modify the rules for my project?</div>
+          <div class="faq-a">Absolutely. The rules are plain text files — modify, extend, or combine them however you want. They're a starting point, not a cage.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What does "free updates forever" mean exactly?</div>
+          <div class="faq-a">When frameworks release major versions (Next.js 15, SQLAlchemy 3, Expo SDK 52...), we update the rules. All buyers get access to every future version at no extra cost.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-logo">Dev<span>Flow</span> Pro</div>
+    <p style="margin-bottom:8px;">Professional AI Coding Rules for Developers</p>
+    <p><a href="https://sparkpacks.gumroad.com/l/ehkwm" target="_blank">License</a> · <a href="mailto:xsparkpacks@gmail.com">Support</a> · <a href="https://sparkpacks.gumroad.com/l/ehkwm" target="_blank">Changelog</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

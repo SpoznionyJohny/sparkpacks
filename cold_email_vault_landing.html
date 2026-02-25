@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cold Email Vault — 43 Templates That Actually Get Replies</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f0f4f0;
+    --surface: #ffffff;
+    --green-dark: #1a3326;
+    --green-mid: #2d5a3d;
+    --green: #3d7a54;
+    --green-light: #e4f0e8;
+    --accent: #ff6b35;
+    --accent-dark: #e55a26;
+    --text: #0f1f18;
+    --muted: #5a7265;
+    --border: #d0ddd4;
+    --code-bg: #1a3326;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  nav {
+    padding: 18px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(240,244,240,.95);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--green-dark);
+    letter-spacing: -1px;
+  }
+  .logo span { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    padding: 9px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all .15s;
+  }
+  .nav-cta:hover { background: var(--accent-dark); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    padding: 80px 0 72px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-light);
+    border: 1px solid var(--border);
+    color: var(--green-mid);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+    letter-spacing: .5px;
+  }
+
+  h1 {
+    font-size: clamp(36px, 5.5vw, 64px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -2px;
+    color: var(--green-dark);
+    margin-bottom: 20px;
+    max-width: 700px;
+  }
+  h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 40px;
+    line-height: 1.65;
+    font-weight: 400;
+  }
+
+  .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    padding: 15px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all .2s;
+    box-shadow: 0 4px 16px rgba(255,107,53,.3);
+  }
+  .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,53,.35); }
+
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .stat-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--green-dark);
+    letter-spacing: -1px;
+  }
+  .stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* EMAIL PREVIEW */
+  .preview { padding: 72px 0; border-bottom: 1px solid var(--border); }
+
+  h2 {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    color: var(--green-dark);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+
+  .email-demo {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 40px;
+    box-shadow: 0 8px 32px rgba(26,51,38,.08);
+  }
+  .email-header {
+    background: var(--code-bg);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .email-dots { display: flex; gap: 6px; }
+  .email-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .email-dot.r { background: #ff5f57; }
+  .email-dot.y { background: #febc2e; }
+  .email-dot.g { background: #28c840; }
+  .email-label { font-family: 'Space Mono', monospace; font-size: 11px; color: rgba(255,255,255,.4); }
+
+  .email-meta {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--green-light);
+    background: var(--green-light);
+  }
+  .email-meta div { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .email-meta strong { color: var(--green-dark); }
+  .email-subject { font-weight: 700; font-size: 14px; color: var(--green-dark); }
+
+  .email-body {
+    padding: 24px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .email-body p { margin-bottom: 12px; }
+  .highlight-word { background: rgba(255,107,53,.12); color: var(--accent-dark); padding: 1px 4px; border-radius: 3px; font-weight: 600; font-size: 13px; }
+  .email-annotation {
+    position: relative;
+    background: rgba(255,107,53,.06);
+    border-left: 3px solid var(--accent);
+    padding: 8px 12px;
+    border-radius: 0 6px 6px 0;
+    font-size: 12px;
+    color: var(--accent-dark);
+    margin: -4px 0 12px;
+    font-weight: 500;
+  }
+
+  /* CATEGORIES */
+  .categories { padding: 72px 0; border-bottom: 1px solid var(--border); }
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 40px; }
+  .cat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: all .2s;
+    cursor: default;
+  }
+  .cat-card:hover { border-color: var(--green); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,51,38,.1); }
+  .cat-icon { font-size: 24px; margin-bottom: 10px; }
+  .cat-name { font-weight: 700; font-size: 15px; color: var(--green-dark); margin-bottom: 4px; }
+  .cat-count { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--green); margin-bottom: 6px; }
+  .cat-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* PLAYBOOK */
+  .playbook { padding: 72px 0; background: var(--green-dark); border-top: 1px solid rgba(255,255,255,.1); }
+  .playbook h2 { color: white; }
+  .playbook .section-label { color: rgba(255,255,255,.4); }
+  .playbook-grid { display: grid; gap: 16px; margin-top: 40px; }
+  .playbook-item {
+    display: flex;
+    gap: 20px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    padding: 20px;
+    transition: border-color .2s;
+  }
+  .playbook-item:hover { border-color: rgba(255,255,255,.2); }
+  .playbook-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .playbook-title { font-weight: 700; font-size: 16px; color: white; margin-bottom: 6px; }
+  .playbook-desc { font-size: 14px; color: rgba(255,255,255,.5); line-height: 1.5; }
+
+  /* PRICING */
+  .pricing { padding: 80px 0; border-top: 1px solid var(--border); text-align: center; }
+  .price-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 48px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .price-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px 24px;
+    text-align: left;
+    transition: all .2s;
+    position: relative;
+  }
+  .price-card.featured {
+    border-color: var(--accent);
+    box-shadow: 0 0 40px rgba(255,107,53,.15);
+  }
+  .badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+  }
+  .card-plan { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-family: 'Space Mono', monospace; }
+  .card-price { font-size: 48px; font-weight: 700; color: var(--green-dark); letter-spacing: -2px; margin-bottom: 4px; }
+  .card-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+  .card-features { list-style: none; display: grid; gap: 10px; margin-bottom: 28px; }
+  .card-feature { display: flex; gap: 8px; font-size: 14px; color: var(--muted); }
+  .card-feature::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+  .card-feature.em { color: var(--text); }
+  .card-btn {
+    display: block;
+    width: 100%;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all .15s;
+  }
+  .card-btn:hover { background: var(--accent-dark); }
+  .card-btn.outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .card-btn.outline:hover { border-color: var(--green); color: var(--green); }
+
+  .guarantee-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 32px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  footer {
+    padding: 40px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+  .footer-logo { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 16px; color: var(--green-dark); margin-bottom: 8px; }
+  .footer-logo span { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Cold Email<span>Vault</span></div>
+  <a href="https://sparkpacks.gumroad.com/l/nuexzq" target="_blank" class="nav-cta">Get Templates — $19</a>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="tag">✉ 43 Battle-Tested Templates</div>
+      <h1>Cold emails that get<br>replies. <span>Not ignored.</span></h1>
+      <p class="hero-sub">
+        40 proven templates + full playbook for freelancers and agencies.
+        Every template is written for a specific situation and a specific outcome.
+      </p>
+      <div class="hero-actions">
+        <a href="https://sparkpacks.gumroad.com/l/nuexzq" target="_blank" class="btn-primary">Get the Vault — $19 →</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">43</div>
+          <div class="stat-label">Proven Templates</div>
+        </div>
+        <div>
+          <div class="stat-num">12</div>
+          <div class="stat-label">Categories</div>
+        </div>
+        <div>
+          <div class="stat-num">50</div>
+          <div class="stat-label">Subject Lines Included</div>
+        </div>
+        <div>
+          <div class="stat-num">30d</div>
+          <div class="stat-label">Money-Back Guarantee</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMAIL PREVIEW -->
+  <section class="preview">
+    <div class="container">
+      <div class="section-label">See What Works</div>
+      <h2>Every template explains<br>why it works.</h2>
+
+      <div class="email-demo">
+        <div class="email-header">
+          <div class="email-dots">
+            <div class="email-dot r"></div>
+            <div class="email-dot y"></div>
+            <div class="email-dot g"></div>
+          </div>
+          <div class="email-label">Template #1 — The Specific Observation</div>
+        </div>
+        <div class="email-meta">
+          <div><strong>To:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4b382a392a230b2a28262e383f24392e65282426">[email&#160;protected]</a></div>
+          <div><strong>From:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f1889e84b1889e8483959e9c90989fdf929e9c">[email&#160;protected]</a></div>
+          <div class="email-subject">noticed something on acmestore.com</div>
+        </div>
+        <div class="email-body">
+          <p>Hi Sarah,</p>
+          <p>Was on <span class="highlight-word">acmestore.com</span> doing research for a client in e-commerce. <span class="highlight-word">Noticed your contact form throws a 404</span> after submission — you're probably losing leads without knowing it.</p>
+          <div class="email-annotation">↑ Specific, real observation. Not generic flattery. Shows you actually looked.</div>
+          <p>Quick fix if you have a dev: check the form action URL in the HTML.</p>
+          <div class="email-annotation">↑ Give value first. Free tip with no strings attached.</div>
+          <p>If not — I fix things like this for e-commerce companies. Took me 2 hours for Bloom & Co. last month.</p>
+          <div class="email-annotation">↑ Social proof + speed. Makes the ask feel low-risk.</div>
+          <p>Worth a quick call?</p>
+          <div class="email-annotation">↑ One clear ask. Not 4 options. Not "let me know your thoughts."</div>
+          <p>Alex<br><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7e1f121b063e1f121b061a1b08501711">[email&#160;protected]</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="categories">
+    <div class="container">
+      <div class="section-label">What's Inside</div>
+      <h2>Every situation. Every role.</h2>
+      <div class="cat-grid">
+        <div class="cat-card">
+          <div class="cat-icon">🔵</div>
+          <div class="cat-name">Web Designers</div>
+          <div class="cat-count">5 templates</div>
+          <div class="cat-desc">Speed issues, broken forms, competitor wins, industry-specific, free audits.</div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon">🟢</div>
+          <div class="cat-name">Developers</div>
+          <div class="cat-count">4 templates</div>
+          <div class="cat-desc">Technical observations, GitHub angle, agency overflow, tech stack hooks.</div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon">🟡</div>
+          <div class="cat-name">Designers</div>
+          <div class="cat-count">3 templates</div>
+          <div class="cat-desc">Brand consistency, rebrand triggers, visual problem openers.</div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon">🟠</div>
+          <div class="cat-name">Copywriters</div>
+          <div class="cat-count">3 templates</div>
+          <div class="cat-desc">SEO gaps, dead blogs, content-to-leads positioning.</div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon">🔴</div>
+          <div class="cat-name">Consultants</div>
+          <div class="cat-count">3 templates</div>
+          <div class="cat-desc">Process problems, ROI case, decision-maker hooks.</div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon">🟣</div>
+          <div class="cat-name">Job & Partnership</div>
+          <div class="cat-count">3 templates</div>
+          <div class="cat-desc">"I built something" applications, mutual connections, cold applications.</div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon">⚪</div>
+          <div class="cat-name">Follow-Up Sequences</div>
+          <div class="cat-count">4 templates</div>
+          <div class="cat-desc">Day 4, 8, and 14 follow-ups including the breakup email.</div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon">⚡</div>
+          <div class="cat-name">Re-Engagement</div>
+          <div class="cat-count">3 templates</div>
+          <div class="cat-desc">Past clients, cold leads after 3 months, dormant contacts.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAYBOOK -->
+  <section class="playbook">
+    <div class="container">
+      <div class="section-label">The Playbook</div>
+      <h2>Not just templates.<br>A full system.</h2>
+      <div class="playbook-grid">
+        <div class="playbook-item">
+          <div class="playbook-num">01</div>
+          <div>
+            <div class="playbook-title">The 5 Rules (Before You Send Anything)</div>
+            <div class="playbook-desc">Subject lines, first-line psychology, value-before-ask, CTA clarity, follow-up timing. The foundation everything else is built on.</div>
+          </div>
+        </div>
+        <div class="playbook-item">
+          <div class="playbook-num">02</div>
+          <div>
+            <div class="playbook-title">The Anatomy of a Converting Cold Email</div>
+            <div class="playbook-desc">Exact structure: opening → bridge → value → CTA. With a worked example and length guidance.</div>
+          </div>
+        </div>
+        <div class="playbook-item">
+          <div class="playbook-num">03</div>
+          <div>
+            <div class="playbook-title">Follow-Up Sequence Structure</div>
+            <div class="playbook-desc">Day 1, 4, 8, 14 sequence. Each email adds value, not just "checking in." Includes the breakup email that triggers replies.</div>
+          </div>
+        </div>
+        <div class="playbook-item">
+          <div class="playbook-num">04</div>
+          <div>
+            <div class="playbook-title">50 Subject Lines That Get Opened</div>
+            <div class="playbook-desc">Organized by approach: curiosity, specific/personal, value-first, low-pressure, numbers. Use them, remix them.</div>
+          </div>
+        </div>
+        <div class="playbook-item">
+          <div class="playbook-num">05</div>
+          <div>
+            <div class="playbook-title">5-Minute Research Checklist</div>
+            <div class="playbook-desc">What to check before every email: their company, website, and the person. Turns generic into specific in minutes.</div>
+          </div>
+        </div>
+        <div class="playbook-item">
+          <div class="playbook-num">06</div>
+          <div>
+            <div class="playbook-title">Metrics Benchmark</div>
+            <div class="playbook-desc">What good looks like: open rates, reply rates, meeting rates. Know when your campaigns are working and when to fix them.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-label">Pricing</div>
+      <h2>Own it forever.</h2>
+      <p style="color:var(--muted);margin-top:8px;">No subscription. Download once. Use forever.</p>
+      <div class="price-cards">
+        <div class="price-card">
+          <div class="card-plan">Solo</div>
+          <div class="card-price">$19</div>
+          <div class="card-sub">For one freelancer</div>
+          <ul class="card-features">
+            <li class="card-feature em">All 40 templates</li>
+            <li class="card-feature">Full playbook</li>
+            <li class="card-feature">50 subject lines</li>
+            <li class="card-feature">Research checklist</li>
+            <li class="card-feature">Metrics benchmark</li>
+            <li class="card-feature">Free updates</li>
+          </ul>
+          <a href="https://sparkpacks.gumroad.com/l/nuexzq" target="_blank" class="card-btn outline">Get Solo License — $19</a>
+        </div>
+        <div class="price-card featured">
+          <div class="badge">Best Value</div>
+          <div class="card-plan">Agency</div>
+          <div class="card-price">$39</div>
+          <div class="card-sub">For teams up to 10</div>
+          <ul class="card-features">
+            <li class="card-feature em">All 40 templates</li>
+            <li class="card-feature em">Team of up to 10 people</li>
+            <li class="card-feature em">Full playbook</li>
+            <li class="card-feature">50 subject lines</li>
+            <li class="card-feature">Research checklist</li>
+            <li class="card-feature em">Free lifetime updates</li>
+          </ul>
+          <a href="https://sparkpacks.gumroad.com/l/nuexzq" target="_blank" class="card-btn">Get Agency License — $39</a>
+        </div>
+      </div>
+      <div c
