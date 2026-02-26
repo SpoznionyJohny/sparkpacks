@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLAUDE.md Pro Kit — Stop Repeating Yourself to Claude Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00FF87;
+    --green-dim: #00cc6a;
+    --bg: #080808;
+    --bg2: #0f0f0f;
+    --bg3: #141414;
+    --border: #1e1e1e;
+    --text: #e8e8e8;
+    --muted: #666;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(8,8,8,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: var(--green);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+
+  .nav-cta {
+    background: var(--green);
+    color: #000;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--white); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0,255,135,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    border: 1px solid rgba(0,255,135,0.3);
+    padding: 6px 16px;
+    letter-spacing: 0.15em;
+    margin-bottom: 40px;
+    display: inline-block;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-triangle {
+    width: 80px;
+    height: 70px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero h1 {
+    font-size: clamp(52px, 9vw, 120px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero h1 .white { color: var(--white); }
+  .hero h1 .green { color: var(--green); }
+
+  .hero-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(13px, 1.5vw, 16px);
+    color: var(--muted);
+    margin-top: 32px;
+    margin-bottom: 48px;
+    max-width: 520px;
+    line-height: 1.7;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .hero-sub span { color: var(--text); }
+
+  .hero-btns {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: #000;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 16px 36px;
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary:hover { background: var(--white); transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    padding: 16px 36px;
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { color: var(--text); border-color: var(--muted); }
+
+  .free-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    margin-top: 20px;
+    letter-spacing: 0.1em;
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+
+  /* ── PROBLEM ── */
+  .problem {
+    padding: 100px 40px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .problem h2 {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+
+  .problem p {
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* ── TERMINAL BLOCK ── */
+  .terminal-section {
+    padding: 0 40px 80px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .terminal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    background: var(--bg3);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+
+  .terminal-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .terminal-body {
+    padding: 28px 32px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    line-height: 2;
+  }
+
+  .t-comment { color: #444; }
+  .t-key { color: #569cd6; }
+  .t-val { color: var(--green); }
+  .t-str { color: #ce9178; }
+  .t-header { color: var(--white); font-weight: 700; }
+  .t-muted { color: var(--muted); }
+  .t-cmd { color: var(--text); }
+  .t-prompt { color: var(--green); margin-right: 8px; }
+
+  /* ── WHAT'S INSIDE ── */
+  .inside {
+    padding: 100px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .inside-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .inside h2 {
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+  }
+
+  .inside-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .inside-card {
+    background: var(--bg);
+    padding: 36px 32px;
+    transition: background 0.2s;
+  }
+  .inside-card:hover { background: var(--bg2); }
+
+  .card-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .card-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .card-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .card-desc {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .card-list {
+    list-style: none;
+    margin-top: 16px;
+  }
+  .card-list li {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 4px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .card-list li::before {
+    content: '→';
+    color: var(--green);
+    flex-shrink: 0;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how {
+    padding: 100px 40px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .how h2 {
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 64px;
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    text-align: left;
+    position: relative;
+  }
+
+  .steps::before {
+    content: '';
+    position: absolute;
+    left: 27px;
+    top: 28px;
+    bottom: 28px;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .step {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 56px;
+    height: 56px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-content h3 {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .step-content p {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .step-content code {
+    background: var(--bg3);
+    color: var(--green);
+    padding: 2px 8px;
+    font-size: 12px;
+    border: 1px solid var(--border);
+  }
+
+  /* ── COMPATIBILITY ── */
+  .compat {
+    padding: 80px 40px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .compat p {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    letter-spacing: 0.1em;
+  }
+
+  .compat-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .compat-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .compat-item span {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    padding: 120px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-glow {
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(0,255,135,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-section h2 {
+    font-size: clamp(32px, 5vw, 72px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+
+  .cta-section h2 .green { color: var(--green); }
+
+  .cta-section p {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 48px;
+  }
+
+  .cta-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 24px;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--green);
+    text-decoration: none;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+  }
+
+  .footer-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--text); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 16px 20px; }
+    .hero { padding: 100px 20px 60px; }
+    .hero-btns { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-secondary { width: 100%; text-align: center; justify-content: center; }
+    footer { flex-direction: column; text-align: center; }
+    .footer-links { justify-content: center; }
+    .steps::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="https://sparkpacks.gumroad.com">SparkPacks ↗</a>
+  <a class="nav-cta" href="https://sparkpacks.gumroad.com" target="_blank">GET IT FREE →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+
+  <div class="badge">FREE DOWNLOAD — SPARKPACKS</div>
+
+  <svg class="hero-triangle" viewBox="0 0 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="40,4 76,66 4,66" fill="#00FF87" opacity="0.15"/>
+    <polygon points="40,4 76,66 4,66" fill="none" stroke="#00FF87" stroke-width="2"/>
+    <polygon points="40,18 66,62 14,62" fill="#00FF87" opacity="0.25"/>
+  </svg>
+
+  <h1>
+    <span class="white">CLAUDE</span><span class="green">.md</span><br>
+    <span class="white">PRO KIT</span>
+  </h1>
+
+  <p class="hero-sub">
+    Claude Code forgets your project between sessions.<br>
+    <span>One file fixes that. Every session.</span>
+  </p>
+
+  <div class="hero-btns">
+    <a href="https://sparkpacks.gumroad.com" class="btn-primary" target="_blank">
+      DOWNLOAD FREE →
+    </a>
+    <a href="#inside" class="btn-secondary">SEE WHAT'S INSIDE</a>
+  </div>
+
+  <p class="free-tag">FREE · 19 FILES · 5 MIN SETUP</p>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem reveal">
+  <span class="section-label">THE PROBLEM</span>
+  <h2>You explain your project.<br>Every. Single. Session.</h2>
+  <p>
+    "Use FastAPI, not Flask." <span>"Don't use print(), use logging."</span>
+    "Our commits follow conventional commits format."
+    <br><br>
+    Claude forgets between sessions. You repeat yourself. Time wasted.
+    <span>CLAUDE.md Pro Kit ends that loop.</span>
+  </p>
+</section>
+
+<!-- TERMINAL -->
+<section class="terminal-section reveal">
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+      <span class="terminal-title">CLAUDE.md — your project root</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="t-header"># Project Context</span></div>
+      <div><span class="t-str">FastAPI REST API with SQLAlchemy 2.0 async and JWT auth.</span></div>
+      <br>
+      <div><span class="t-header">## Commands</span></div>
+      <div><span class="t-cmd">- </span><span class="t-val">uvicorn app.main:app --reload</span><span class="t-muted"> — Start dev server</span></div>
+      <div><span class="t-cmd">- </span><span class="t-val">pytest</span><span class="t-muted"> — Run all tests</span></div>
+      <div><span class="t-cmd">- </span><span class="t-val">alembic upgrade head</span><span class="t-muted"> — Apply migrations</span></div>
+      <br>
+      <div><span class="t-header">## Architecture Rules</span></div>
+      <div><span class="t-key">NEVER</span><span class="t-muted"> expose DB models directly — always use Pydantic schemas</span></div>
+      <div><span class="t-key">NEVER</span><span class="t-muted"> put business logic in route handlers — use services layer</span></div>
+      <div><span class="t-key">NEVER</span><span class="t-muted"> use print() — use logging module</span></div>
+      <br>
+      <div><span class="t-comment"># Claude reads this every session. You never repeat yourself again.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section class="inside" id="inside">
+  <div class="inside-header reveal">
+    <span class="section-label">WHAT'S INCLUDED</span>
+    <h2>19 files. Everything you need.</h2>
+  </div>
+
+  <div class="inside-grid">
+    <div class="inside-card reveal">
+      <span class="card-icon">📄</span>
+      <span class="card-count">05 TEMPLATES</span>
+      <div class="card-title">CLAUDE.md Templates</div>
+      <p class="card-desc">Production-ready configs for the most common stacks. Pick one, fill 4 blanks, done.</p>
+      <ul class="card-list">
+        <li>Python + FastAPI + SQLAlchemy</li>
+        <li>Next.js 14 + TypeScript + Prisma</li>
+        <li>React Native + Expo + NativeWind</li>
+        <li>Django + DRF + Celery</li>
+        <li>Node.js + Express + TypeScript</li>
+      </ul>
+    </div>
+
+    <div class="inside-card reveal">
+      <span class="card-icon">⚡</span>
+      <span class="card-count">05 HOOKS</span>
+      <div class="card-title">Automation Hooks</div>
+      <p class="card-desc">Run outside the AI loop — guaranteed to fire every time, regardless of what Claude thinks.</p>
+      <ul class="card-list">
+        <li>Session Start — injects git context automatically</li>
+        <li>Block Dangerous Commands — stops rm -rf, pipe-to-bash</li>
+        <li>Protect Sensitive Files — guards .env, lock files</li>
+        <li>Post-Edit Checks — catches console.log left in code</li>
+        <li>Pre-Commit Gate — lint + tests + secret scan</li>
+      </ul>
+    </div>
+
+    <div class="inside-card reveal">
+      <span class="card-icon">🧠</span>
+      <span class="card-count">02 SKILLS + 01 CONFIG</span>
+      <div class="card-title">Skills & Config</div>
+      <p class="card-desc">Reusable instruction sets Claude applies on demand. Plus ready-to-use settings.json.</p>
+      <ul class="card-list">
+        <li>Code Review — production-grade checklist</li>
+        <li>Feature Planning — forces planning before building</li>
+        <li>settings.json — all hooks wired up, ready to go</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <span class="section-label reveal">SETUP</span>
+  <h2 class="reveal">5 minutes. That's it.</h2>
+
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <h3>Pick your template</h3>
+        <p>Open <code>templates/</code> and grab the file that matches your stack. 5 stacks covered — Python, Next.js, React Native, Django, Node.js.</p>
+      </div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <h3>Rename and drop it in</h3>
+        <p>Copy to your project root. Rename to <code>CLAUDE.md</code> — exact spelling matters. That's where Claude Code looks for it.</p>
+      </div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <h3>Fill in 4 blanks</h3>
+        <p>Project description. Your actual commands. Remove stacks you don't use. Add project-specific gotchas. Done.</p>
+      </div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">04</div>
+      <div class="step-content">
+        <h3>Add hooks (optional)</h3>
+        <p>Copy <code>hooks/*.sh</code> to <code>.claude/hooks/</code>, drop in <code>settings.json</code>. Run <code>/hooks</code> in Claude Code to verify. Full automation in 2 minutes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPATIBILITY -->
+<section class="compat reveal">
+  <p>COMPATIBLE WITH</p>
+  <div class="compat-row">
+    <div class="compat-item">
+      ◆ Claude Code
+      <span>FULL SUPPORT</span>
+    </div>
+    <div class="compat-item">
+      ▷ Cursor
+      <span>RENAME → AGENTS.MD</span>
+    </div>
+    <div class="compat-item">
+      ○ GitHub Copilot
+      <span>MOVE TO .GITHUB/</span>
+    </div>
+    <div class="compat-item">
+      □ Zed
+      <span>RENAME → .RULES</span>
+    </div>
+    <div class="compat-item">
+      ◇ OpenCode
+      <span>RENAME → AGENTS.MD</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <span class="section-label reveal">FREE DOWNLOAD</span>
+  <h2 class="reveal">Stop repeating yourself.<br><span class="green">Start shipping faster.</span></h2>
+  <p class="reveal">No email required. No catch. Just useful stuff.</p>
+  <div class="reveal">
+    <a href="https://sparkpacks.gumroad.com" class="btn-primary" target="_blank" style="font-size:15px; padding: 18px 48px;">
+      DOWNLOAD FREE →
+    </a>
+  </div>
+  <p class="cta-meta reveal">19 FILES · CLAUDE CODE · HOOKS · SKILLS · TEMPLATES</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a class="footer-logo" href="https://sparkpacks.gumroad.com">SparkPacks</a>
+  <div class="footer-links">
+    <a href="https://sparkpacks.gumroad.com" target="_blank">All Products</a>
+    <a href="https://x.com/arczi_x72105" target="_blank">Twitter / X</a>
+    <a href="https://www.linkedin.com/in/sparkpacks/" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
